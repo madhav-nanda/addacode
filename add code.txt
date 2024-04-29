@@ -1,0 +1,31 @@
+name: Generate Table of Contents
+
+on:
+  push:
+    branches:
+      - '*'
+
+jobs:
+  generate-toc:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+      
+      - name: Generate Table of Contents
+        uses: actions/markdown-toc@v2
+        with:
+          repo-token: ${{ secrets.GITHUB_TOKEN }}
+          files: |
+            path/to/your/markdown/file1.md
+            path/to/your/markdown/file2.md
+            # Add more Markdown files if needed
+
+      - name: Commit changes
+        run: |
+          git config --local user.email "action@github.com"
+          git config --local user.name "GitHub Action"
+          git add .
+          git commit -m "Automatically generate table of contents"
+          git push
